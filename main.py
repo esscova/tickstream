@@ -201,3 +201,15 @@ async def monitorar() -> None:
                     f"Ask: {ask_txt} | "
                     f"Volume: {vol_txt}"
                 )
+
+# MAIN #
+def main() -> None:
+    try:
+        asyncio.run(monitorar())
+    except KeyboardInterrupt:
+        print('\nEncerrando o monitoramento.')
+    except Exception as e:
+        print(f'Erro: {type(e).__name__}: {e}')
+
+if __name__ == '__main__':
+    main()
