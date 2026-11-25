@@ -120,7 +120,7 @@ async def monitorar() -> None:
         await asyncio.sleep(.3)
 
         await send_message(ws, 'quote_set_fields', [
-            session, 'lp', 'ch', 'volume', 'bid', 'ask',
+            session, 'lp', 'ch', 'chp','volume', 'bid', 'ask',
             'high_price', 'low_price', 'open_price', 'prev_close_price',
             'description', 'short_name',
         ])
@@ -142,8 +142,8 @@ async def monitorar() -> None:
                 raw = await asyncio.wait_for(ws.recv(), timeout=RECV_TIMEOUT)
             except asyncio.TimeoutError:
                 print(
-                    f'[{datetime.now():%H:%M:%S}]'
-                    f'Nenhuma mensagem recebida nos últimos {RECV_TIMEOUT} segundos.'
+                        f'[{datetime.now():%H:%M:%S}]'
+                        f'Nenhuma mensagem recebida nos últimos {RECV_TIMEOUT} segundos.'
                 )
                 continue
             
@@ -186,7 +186,7 @@ async def monitorar() -> None:
                     continue
                 ultimo_preco[symbol] = preco
 
-                var_txt = formatar(estado.get('ch'), ',+.2f')
+                var_txt = formatar(estado.get('ch'), '+,.2f')
                 pct_txt = (f'{estado["chp"]:+.2f}%' if estado.get('chp') is not None else 'N/D')
                 vol_txt = formatar(estado.get('volume'), ',.0f')
                 bid_txt = formatar(estado.get('bid'), ',.2f')
