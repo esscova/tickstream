@@ -31,3 +31,53 @@ if __name__ == '__main__':
         ['unauthorized_user_token']
     )
     print(message)
+
+
+def parse_messages(raw: str) -> list:
+    messages = []
+    pos = 0
+
+    while True:
+        start = raw.find("~m~", pos)
+
+        if start == -1:
+            break
+
+        len_start = start + 3
+        len_end = raw.find("~m~", len_start)
+
+        if len_end == -1:
+            break
+
+        try:
+            length = int(raw[len_start:len_end])
+        except ValueError:
+            pos = len_end
+            continue
+
+        content_start = len_end + 3
+        content = raw[content_start:content_start + length]
+
+        if content.startswith("~h~"):
+            messages.append(("heartbeat", content))
+        else:
+            try:
+                messages.append(("json", json.loads(content)))
+            except json.JSONDecodeError:
+                messages.append(("raw", content))
+
+        pos = content_start + length
+
+    return messages
+
+if __name__ == '__main__':
+    # Simula uma mensagem JSON no formato do TradingView
+    conteudo = '{"m":"qsd","p":["session",{"n":"PETR4","v":{"lp":32.50}}]}'
+
+    mensagem = f"~m~{len(conteudo)}~m~{conteudo}"
+    heartbeat = "~m~5~m~~h~123"
+
+    resultado = parse_messages(mensagem)
+
+    print(parse_messages(heartbeat))
+    print(resultado)
