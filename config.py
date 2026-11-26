@@ -2,7 +2,7 @@
 configurações do projeto
 """
 
-TICKERS = [
+SYMBOLS = [
     "BMFBOVESPA:ALOS3",
     "BMFBOVESPA:BBAS3",
     "BMFBOVESPA:BBDC3",
